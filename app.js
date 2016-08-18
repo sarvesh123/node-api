@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 var users = require('./routes/users');
 
-app.use('/users', users);
+app.use('/api/users', users);
 
 app.listen(3000, function () {
     console.log('Api listening on port 3000');
