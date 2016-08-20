@@ -1,7 +1,9 @@
 /**
  * Created by sarvesh on 8/14/2016.
  */
-const User = require('../models/User');
+const User = require('../models/User'),
+    config = require('../config'),
+    userUtil = require('./util');
 
 exports.getUser = function (req, res) {
     User.findById(req.params.id, function (err, user) {
@@ -14,21 +16,31 @@ exports.getUser = function (req, res) {
 };
 
 exports.createUser = function (req, res) {
-    const user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-    });
-    user.save(function (err) {
-        if (err)
-            throw err;
-        User.findById(user._id, function (err, user) {
-            if (err) return err;
-            res.send({
-                _id: user._id,
-                name: user.name,
-                email: user.password
+    User.find({
+        email: req.body.email
+    }, function (err, user) {
+        if (Object.keys(user).length) {
+            res.json({
+                success: false,
+                message: 'User Exists'
             });
-        });
+        }
+        else {
+            const user = new User({
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password
+            });
+            user.save(function (err, user) {
+                if (err)
+                    throw err;
+                var token = userUtil.getAuthToken(user);
+                res.json({
+                    success: true,
+                    message: 'Logged In!',
+                    token: token
+                });
+            });
+        }
     });
 };
