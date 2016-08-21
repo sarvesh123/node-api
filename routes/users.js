@@ -7,6 +7,7 @@ const express = require('express'),
 
 router.get('/:id', users.getUser);
 router.post('/', users.createUser);
+router.post('/login', users.login);
 
 module.exports = router;
 

@@ -21,7 +21,7 @@ exports.createUser = function (req, res) {
     }, function (err, user) {
         if (Object.keys(user).length) {
             res.json({
-                success: false,
+                status: false,
                 message: 'User Exists'
             });
         }
@@ -36,10 +36,47 @@ exports.createUser = function (req, res) {
                     throw err;
                 var token = userUtil.getAuthToken(user);
                 res.json({
-                    success: true,
+                    status: true,
                     message: 'Logged In!',
-                    token: token
+                    token: token,
+                    user: {
+                        name: user.name,
+                        email: user.email
+                    }
                 });
+            });
+        }
+    });
+};
+
+exports.login = function (req, res) {
+    User.find({
+        email: req.body.email
+    }, function (err, user) {
+        if (Object.keys(user).length) {
+            if (user[0].password == req.body.password) {
+                var token = userUtil.getAuthToken(user[0]);
+                res.json({
+                    status: true,
+                    message: 'Logged In!',
+                    token: token,
+                    user: {
+                        name: user[0].name,
+                        email: user[0].email
+                    }
+                });
+            }
+            else {
+                res.json({
+                    status: false,
+                    message: 'Incorrect Username & Password'
+                });
+            }
+        }
+        else {
+            res.json({
+                status: false,
+                message: 'Cannot find User'
             });
         }
     });
