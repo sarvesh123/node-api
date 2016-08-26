@@ -6,13 +6,20 @@ const User = require('../models/User'),
     userUtil = require('./util');
 
 exports.getUser = function (req, res) {
-    User.findById(req.params.id, function (err, user) {
-        if (err) return err;
-        res.send({
-            _id: user._id,
-            name: user.name
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    if (token && userUtil.validateToken(token)) {
+        User.findById(req.params.id, function (err, user) {
+            if (err) return err;
+            res.send({
+                _id: user._id,
+                name: user.name,
+                email: user.email
+            });
         });
-    });
+    }
+    else {
+        res.json({ status: false, message: 'Failed to authenticate token.' });
+    }
 };
 
 exports.createUser = function (req, res) {
