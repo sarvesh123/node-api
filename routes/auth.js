@@ -3,10 +3,15 @@
  */
 const express = require('express'),
     router = express.Router(),
-    auth = require('../controllers/auth');
+    auth = require('../controllers/auth'),
+    passport = require('passport');
 
-router.get('/twitter', auth.twitter);
-router.post('/twitter/callback', auth.twitterCallback);
+// router.get('/twitter/callback', passport.authenticate('twitter', {
+//             	successRedirect : '/profile',
+//             	failureRedirect : '/'
+//         	})
+// 	);
+router.get('/twitter', passport.authenticate('twitter'));
 
 module.exports = router;
 

@@ -7,18 +7,20 @@ const express = require('express'),
     morgan = require('morgan'),
     mongoose = require('mongoose'),
     config = require('./config'),
-    passport = require('passport');
+    passport = require('passport'),
+    TwitterStrategy = require('passport-twitter').Strategy;
 
 var port = process.env.PORT || 3000;
 mongoose.connect(config.database);
+
+require('./config/passport')(passport); // pass passport for configuration
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(morgan('dev'));
 
-// Initialize Passport and restore authentication state, if any, from the
-// session.
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 

@@ -14,11 +14,12 @@ passport.use(new Strategy({
 }));
 
 exports.twitter = function (req, res) {
-    console.log('in function');
+    console.log('Initialise');
     passport.authenticate('twitter');
 };
 
 exports.twitterCallback = function (req, res) {
+    console.log('twitterCallback');
     passport.authenticate('twitter', { failureRedirect: '/login' }),
         function (req, res) {
             res.redirect('/');
