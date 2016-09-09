@@ -11,7 +11,7 @@ module.exports = function(passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        User.findOne({ 'twitter.id' : id }, function(err, user) {
+        User.findById(id, function(err, user) {
             done(err, user);
         });
     });
@@ -49,8 +49,7 @@ module.exports = function(passport) {
                     // set all of the user data that we need
                     newUser.twitter.id          = profile.id;
                     newUser.twitter.token       = token;
-                    newUser.twitter.username    = profile.username;
-                    newUser.twitter.displayName = profile.displayName;
+                    newUser.name    = profile.displayName;
     
                     // save our user into the database
                     newUser.save(function(err) {

@@ -88,3 +88,16 @@ exports.login = function (req, res) {
         }
     });
 };
+
+exports.profile = function (req, res) {
+    var token = userUtil.getAuthToken(req.user);
+    res.json({
+        status: true,
+        message: 'Logged In!',
+        token: token,
+        user: {
+            name: req.user.name,
+            email: req.user.email
+        }
+    });
+};

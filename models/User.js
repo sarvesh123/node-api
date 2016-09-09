@@ -10,9 +10,7 @@ var UserSchema = new Schema({
     password: String,
     twitter: {
     	id: String,
-    	token: String,
-    	name: String,
-    	email: String
+    	token: String
     }
 });
 
