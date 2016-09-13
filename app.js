@@ -33,9 +33,11 @@ app.use(function(req, res, next) {
 
 var users = require('./routes/users');
 var auth = require('./routes/auth');
+var chats = require('./routes/chats');
 
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+app.use('/api/chats', chats);
 
 app.listen(port, function () {
     console.log('Api listening on port ' + port);
