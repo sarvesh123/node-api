@@ -5,6 +5,25 @@ const User = require('../models/User'),
     config = require('../config'),
     userUtil = require('./util');
 
+exports.getOnlineUsers = function(req, res) {
+    User.find({
+        online: true
+    }, function(err, users) {
+        if (Object.keys(users).length) {
+            res.json({
+                status: true,
+                users: users
+            })
+        }
+        else {
+            res.json({
+                status: false,
+                message: 'No Online Users found'
+            })
+        }
+    })
+}
+
 exports.getUser = function (req, res) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
     if (token && userUtil.validateToken(token)) {
@@ -62,6 +81,25 @@ exports.login = function (req, res) {
     }, function (err, user) {
         if (Object.keys(user).length) {
             if (user[0].password == req.body.password) {
+                console.log(user[0])
+                User.update({
+                    _id: user[0]._id
+                }, {
+                    $set: {
+                        online: true
+                    }
+                }, {
+                    upsert: true,
+                    strict: false
+                }, function (err, response) {
+                    if (err) {
+                        console.log('Error:', err);
+                    }
+                    else {
+                        console.log('Update user,', response)
+                    }
+                })
+
                 var token = userUtil.getAuthToken(user[0]);
                 res.json({
                     status: true,

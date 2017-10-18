@@ -5,7 +5,7 @@ const express = require('express'),
     router = express.Router(),
     chats = require('../controllers/chats');
 
-router.get('/:receiver', chats.getChats);
+router.post('/getChats', chats.getChats);
 router.post('/', chats.saveChats);
 
 module.exports = router;

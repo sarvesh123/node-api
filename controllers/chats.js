@@ -6,9 +6,8 @@ const Chat = require('../models/Chat'),
     userUtil = require('./util');
 
 exports.getChats = function (req, res) {
-    console.log( req.params.receiver );
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    if (token && userUtil.validateToken(token)) {
+    // if (token && userUtil.validateToken(token)) {
         Chat.find({
             $or: [ {sender: req.body.sender}, {sender: req.body.receiver}],
             $or: [ {receiver: req.body.receiver}, {receiver: req.body.sender}]
@@ -16,13 +15,14 @@ exports.getChats = function (req, res) {
             console.log( chats );
             if (err) return err;
             res.send({
+                status: true,
                 messages: chats
             });
         });
-    }
-    else {
-        res.json({ status: false, message: 'Failed to authenticate token.' });
-    }
+    // }
+    // else {
+    //     res.json({ status: false, message: 'Failed to authenticate token.' });
+    // }
 };
 
 exports.saveChats = function (req, res) {
