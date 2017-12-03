@@ -7,8 +7,7 @@ const express = require('express'),
     morgan = require('morgan'),
     mongoose = require('mongoose'),
     config = require('./config'),
-    passport = require('passport'),
-    TwitterStrategy = require('passport-twitter').Strategy;
+    passport = require('passport');
 
 var port = process.env.PORT || 3000;
 mongoose.connect(config.database);

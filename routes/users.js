@@ -6,7 +6,7 @@ const express = require('express'),
     users = require('../controllers/users');
 
 router.get('/profile', isLoggedIn, users.profile);
-router.get('/getOnlineUsers', users.getOnlineUsers);
+router.post('/getOnlineUsers', users.getOnlineUsers);
 router.get('/:id', users.getUser);
 router.post('/', users.createUser);
 router.post('/login', users.login);
